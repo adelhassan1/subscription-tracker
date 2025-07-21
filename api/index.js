@@ -28,12 +28,6 @@ app.get('/', (req, res) => {
 	res.send("Welcome to the Subscription Tracker API!");
 });
 
-console.log("🚀 Server is starting...");
-console.log("VERCEL:", process.env.VERCEL);
-console.log("VERCEL_ENV:", process.env.VERCEL_ENV);
-console.log("NODE_ENV:", process.env.NODE_ENV);
-
-
 // Ensure DB is connected before requests are handled
 await connectToDatabase();
 
