@@ -28,17 +28,7 @@ app.get('/', (req, res) => {
 	res.send("Welcome to the Subscription Tracker API!");
 });
 
-let isConnected = false;
+await connectToDatabase();
 
-const handler = async (req, res) => {
-	if (!isConnected) {
-		console.log("📡 Connecting to DB...");
-		await connectToDatabase();
-		isConnected = true;
-		console.log("✅ DB connected!");
-	}
-	return serverless(app)(req, res);
-};
-
-export default handler;
-export { app }; // for local dev
+export default serverless(app);
+export { app };
