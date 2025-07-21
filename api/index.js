@@ -31,5 +31,5 @@ app.get('/', (req, res) => {
 // Ensure DB is connected before requests are handled
 async () => await connectToDatabase();
 
-export const handler = serverless(app); // for Vercel
+export default serverless(app);
 export { app }; // for local dev
