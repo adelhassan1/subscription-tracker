@@ -1,32 +1,25 @@
 import arcjet, { shield, detectBot, tokenBucket } from "@arcjet/node";
-import { ARCJET_KEY } from '../config/env.js';
+import { ARCJET_KEY } from './env.js'
 
-const isVercelPreview = process.env.VERCEL === '1' && process.env.VERCEL_ENV === 'preview';
-
-console.log("🛡️ Arcjet Mode:", isVercelPreview ? "DISABLED (Preview)" : "ENABLED");
-
-const aj = isPreview
-	? (req, res, next) => next()
-	: arcjet({
-		key: ARCJET_KEY,
-		characteristics: ["ip.src"],
-		rules: [
-        shield({ mode: "LIVE" }),
-        detectBot({
-			mode: "LIVE",
-			allow: [
-            "CATEGORY:SEARCH_ENGINE",
-            "POSTMAN",
+const aj = arcjet({
+	key: ARCJET_KEY,
+	characteristics: ["ip.src"],
+	rules: [
+    shield({ mode: "LIVE" }),
+    detectBot({
+		mode: "LIVE",
+		allow: [
+			"CATEGORY:SEARCH_ENGINE",
 			"VERCEL_MONITOR_PREVIEW"
-			],
-        }),
-        tokenBucket({
-			mode: "LIVE",
-			refillRate: 5,
-			interval: 10,
-			capacity: 10,
-        }),
 		],
-    });
+    }),
+    tokenBucket({
+		mode: "LIVE",
+		refillRate: 5, // Refill 5 tokens per interval
+		interval: 10, // Refill every 10 seconds
+		capacity: 10, // Bucket capacity of 10 tokens
+    }),
+	],
+});
 
 export default aj;
