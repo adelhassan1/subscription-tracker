@@ -1,12 +1,9 @@
 import arcjet, { shield, detectBot, tokenBucket } from "@arcjet/node";
 import { ARCJET_KEY } from '../config/env.js';
 
-const isPreview = process.env.VERCEL_ENV === 'preview';
+const isVercelPreview = process.env.VERCEL === '1' && process.env.VERCEL_ENV === 'preview';
 
-// ⛔ In preview, disable Arcjet entirely
-if (isPreview) {
-	console.warn("🛡️ Arcjet is disabled in Vercel Preview deployments.");
-}
+console.log("🛡️ Arcjet Mode:", isVercelPreview ? "DISABLED (Preview)" : "ENABLED");
 
 const aj = isPreview
 	? (req, res, next) => next()
@@ -19,7 +16,8 @@ const aj = isPreview
 			mode: "LIVE",
 			allow: [
             "CATEGORY:SEARCH_ENGINE",
-            "POSTMAN"
+            "POSTMAN",
+			"VERCEL_MONITOR_PREVIEW"
 			],
         }),
         tokenBucket({
