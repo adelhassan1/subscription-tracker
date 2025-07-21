@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 });
 
 // Ensure DB is connected before requests are handled
-async () => await connectToDatabase();
+await connectToDatabase();
 
 export default serverless(app);
 export { app }; // for local dev
