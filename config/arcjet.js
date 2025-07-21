@@ -10,7 +10,8 @@ const aj = arcjet({
 			mode: "LIVE",
 			allow: [
 			"CATEGORY:SEARCH_ENGINE",
-			"POSTMAN"
+			"POSTMAN",
+			"VERCEL_MONITOR_PREVIEW"
 			],
 		}),
 		tokenBucket({
