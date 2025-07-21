@@ -1,4 +1,4 @@
-import arcjet, { shield, detectBot, tokenBucket} from "@arcjet/node";
+import arcjet, { shield, detectBot, tokenBucket } from "@arcjet/node";
 import { ARCJET_KEY } from '../config/env.js';
 
 const aj = arcjet({
@@ -9,16 +9,16 @@ const aj = arcjet({
 		detectBot({
 			mode: "LIVE",
 			allow: [
-			"CATEGORY:SEARCH_ENGINE",
-			"POSTMAN",
-			"VERCEL_MONITOR_PREVIEW"
+				"CATEGORY:SEARCH_ENGINE",
+				"POSTMAN",
+				"VERCEL_MONITOR_PREVIEW"
 			],
 		}),
 		tokenBucket({
 			mode: "LIVE",
-			refillRate: 5, // Refill 5 tokens per interval
-			interval: 10, // Refill every 10 seconds
-			capacity: 10, // Bucket capacity of 10 tokens
+			refillRate: 5,
+			interval: 10,
+			capacity: 10,
 		}),
 	],
 });
