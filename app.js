@@ -1,5 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import serverless from 'serverless-http';
 
 import { PORT } from './config/env.js';
 
@@ -29,14 +30,18 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Subscription Tracker API!');
 });
 
-app.listen(PORT, async () => {
-  console.log(`Subscription Tracker API is running on http://localhost:${PORT}`);
+let isConnected = false;
+const handler = serverless(app);
 
-  let isConnected = false;
-  if (!isConnected) {
-    await connectToDatabase();
-    isConnected = true;
+export default async function(req, res) {
+  try {
+    if (!isConnected) {
+      await connectToDatabase();
+      isConnected = true;
+    }
+
+    return handler(req, res);
+  } catch (error) {
+    res.status(500).send("Internal server error");
   }
-});
-
-export default app;
+}
