@@ -17,12 +17,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(arcjetMiddleware);
 
-app.use((req, res, next) => {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-	res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-	next();
+app.get('/api/health', (req, res) => {
+	console.log("✅ Health check hit");
+	res.status(200).json({ status: 'ok' });
 });
+
 
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/auth', authRouter);
