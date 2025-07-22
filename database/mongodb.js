@@ -6,6 +6,8 @@ if (!DB_URI) {
 	throw new Error('Please define the MONGODB_URI environment variable inside the .env.<development/production>.local');
 }
 
+mongoose.set('strictQuery', false);
+
 const connectToDatabase = async () => {
 	try {
 		await mongoose.connect(DB_URI);
