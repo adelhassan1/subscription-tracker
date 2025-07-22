@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 });
 
 let isConnected = false;
-let cachedHandler = null;
+let cachedServerlessHandler = null;
 
 const setup = async () => {
   if (!isConnected) {
@@ -46,16 +46,16 @@ const setup = async () => {
     console.log("✅ DB connected!");
   }
 
-  if (!cachedHandler) {
-    cachedHandler = serverless(app);
+  if (!cachedServerlessHandler) {
+    cachedServerlessHandler = serverless(app);
   }
 
-  return cachedHandler;
+  return cachedServerlessHandler;
 };
 
-export default async function handler(req, res) {
-  const fn = await setup();
-  return fn(req, res);
+export default async function vercelHandler(req, res) {
+  const handler = await setup();
+  return handler(req, res); // ❗ this actually runs the handler
 }
 
 export { app };
