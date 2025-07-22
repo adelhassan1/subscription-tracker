@@ -36,23 +36,16 @@ app.get('/', (req, res) => {
 
 let isConnected = false;
 
-const handler = serverless(app);
+const handler = async (req, res) => {
+  if (!isConnected) {
+    console.log("🔌 Connecting to DB...");
+    await connectToDatabase();
+    isConnected = true;
+    console.log("✅ DB connected!");
+  }
 
-export default async function(req, res) {
-	console.log("🛎️ Request received at", req.url);
-	try {
-		if (!isConnected) {
-			console.log("🔌 Connecting to DB...");
-			await connectToDatabase();
-			isConnected = true;
-		}
-
-		console.log("🚀 Passing to Express handler");
-		return handler(req, res);
-	} catch (error) {
-		console.error("❌ Serverless function error:", error);
-		res.status(500).send("Internal server error");
-	}
-}
+  console.log("🚀 Passing to Express handler");
+  return serverless(app)(req, res);
+};
 
 export { app };
