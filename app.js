@@ -1,6 +1,5 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import serverless from 'serverless-http';
 
 import { PORT } from './config/env.js';
 
@@ -31,15 +30,13 @@ app.get('/', (req, res) => {
 });
 
 let isConnected = false;
+app.listen(PORT, async () => {
+  console.log(`Subscription Tracker API is running on http://localhost:${PORT}`);
 
-if (!isConnected) {
-  connectToDatabase()
-    .then(() => {
-      isConnected = true;
-    })
-    .catch(err => {
-      console.error("Failed to connect to DB:", err);
-    });
-}
+  if (!isConnected) {
+    await connectToDatabase();
+    isConnected = true;
+  }
+});
 
-export default serverless(app);
+export default app;
