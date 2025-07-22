@@ -36,8 +36,9 @@ app.get('/', (req, res) => {
 });
 
 let isConnected = false;
+let cachedHandler = null;
 
-const handler = async (req, res) => {
+const setup = async () => {
   if (!isConnected) {
     console.log("🔌 Connecting to DB...");
     await connectToDatabase();
@@ -45,10 +46,16 @@ const handler = async (req, res) => {
     console.log("✅ DB connected!");
   }
 
-  console.log("🚀 Passing to Express handler");
-  return serverless(app)(req, res);
+  if (!cachedHandler) {
+    cachedHandler = serverless(app);
+  }
+
+  return cachedHandler;
 };
 
-export default handler;
+export default async function handler(req, res) {
+  const fn = await setup();
+  return fn(req, res);
+}
 
 export { app };
