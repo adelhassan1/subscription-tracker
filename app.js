@@ -31,17 +31,15 @@ app.get('/', (req, res) => {
 });
 
 let isConnected = false;
-const handler = serverless(app);
 
-export default async function(req, res) {
-  try {
-    if (!isConnected) {
-      await connectToDatabase();
+if (!isConnected) {
+  connectToDatabase()
+    .then(() => {
       isConnected = true;
-    }
-
-    return handler(req, res);
-  } catch (error) {
-    res.status(500).send("Internal server error");
-  }
+    })
+    .catch(err => {
+      console.error("Failed to connect to DB:", err);
+    });
 }
+
+export default serverless(app);
