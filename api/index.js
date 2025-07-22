@@ -31,6 +31,7 @@ app.get('/api/health', (req, res) => {
 // app.use(errorMiddleware);
 
 app.get('/', (req, res) => {
+	console.log("📬 Root route hit");
 	res.send("Welcome to the Subscription Tracker API!");
 });
 
@@ -47,5 +48,7 @@ const handler = async (req, res) => {
   console.log("🚀 Passing to Express handler");
   return serverless(app)(req, res);
 };
+
+export default handler;
 
 export { app };
