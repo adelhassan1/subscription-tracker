@@ -35,8 +35,27 @@ app.get('/', (req, res) => {
 	res.send("Welcome to the Subscription Tracker API!");
 });
 
-export default async function () {
-	await connectToDatabase();
+let isConnected = false;
+let cachedServerlessHandler = null;
+
+const setup = async () => {
+  if (!isConnected) {
+    console.log("🔌 Connecting to DB...");
+    await connectToDatabase();
+    isConnected = true;
+    console.log("✅ DB connected!");
+  }
+
+  if (!cachedServerlessHandler) {
+    cachedServerlessHandler = serverless(app);
+  }
+
+  return cachedServerlessHandler;
+};
+
+export default async function vercelHandler(req, res) {
+  const handler = await setup();
+  return handler(req, res); // ❗ this actually runs the handler
 }
 
 export { app };
