@@ -17,11 +17,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(arcjetMiddleware);
 
-app.get('/api/health', (req, res) => {
-	console.log("✅ Health check hit");
-	res.status(200).json({ status: 'ok' });
-});
-
 
 // app.use('/api/v1/users', userRouter);
 // app.use('/api/v1/auth', authRouter);
@@ -33,6 +28,7 @@ app.get('/api/health', (req, res) => {
 app.get('/', (req, res) => {
 	console.log("📬 Root route hit");
 	res.send("Welcome to the Subscription Tracker API!");
+	console.log("📦 Response sent ✅");
 });
 
 let isConnected = false;
