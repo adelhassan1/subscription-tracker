@@ -2,13 +2,13 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import serverless from 'serverless-http';
 
-import userRouter from '../routes/user.routes.js';
-import authRouter from '../routes/auth.routes.js';
-import subscriptionRouter from '../routes/subscription.routes.js';
-import workflowRouter from '../routes/workflow.routes.js';
-import connectToDatabase from '../database/mongodb.js';
-import errorMiddleware from '../middlewares/error.middleware.js';
-import arcjetMiddleware from '../middlewares/arcjet.middleware.js';
+import userRouter from './routes/user.routes.js';
+import authRouter from './routes/auth.routes.js';
+import subscriptionRouter from './routes/subscription.routes.js';
+import workflowRouter from './routes/workflow.routes.js';
+import connectToDatabase from './database/mongodb.js';
+import errorMiddleware from './middlewares/error.middleware.js';
+import arcjetMiddleware from './middlewares/arcjet.middleware.js';
 
 const app = express();
 
@@ -51,7 +51,7 @@ const setup = async () => {
 
 export default async function vercelHandler(req, res) {
   const handler = await setup();
-  return handler(req, res); // ❗ this actually runs the handler
+  return handler(req, res);
 }
 
 export { app };
