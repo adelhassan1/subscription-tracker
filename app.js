@@ -29,14 +29,18 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Subscription Tracker API!');
 });
 
-let isConnected = false;
-app.listen(PORT, async () => {
-  console.log(`Subscription Tracker API is running on http://localhost:${PORT}`);
-
-  if (!isConnected) {
+const startServer = async () => {
+  try {
     await connectToDatabase();
-    isConnected = true;
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    process.exit(1); // Exit with failure
   }
-});
+};
+
+startServer();
 
 export default app;
